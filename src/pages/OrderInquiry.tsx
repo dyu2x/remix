@@ -73,7 +73,8 @@ export const OrderInquiry: React.FC<OrderInquiryProps> = ({ fingerlings, onAddIn
           fingerling_name: formData.fingerling_name,
           quantity: qty || null,
           message: formData.message,
-          status: 'pending'
+          status: 'pending',
+          contact_status: 'not_contacted'
         });
       }
       setSubmitting(false);

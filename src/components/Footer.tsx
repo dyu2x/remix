@@ -119,6 +119,11 @@ export const Footer: React.FC<FooterProps> = ({ settings }) => {
         {/* Bottom copyright */}
         <div className="pt-8 border-t border-border/40 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-muted-foreground">
           <p>© {new Date().getFullYear()} {settings.farm_name}. All rights reserved.</p>
+          <div className="flex items-center gap-4">
+            <Link to="/connect/admin" className="hover:text-primary transition-colors flex items-center gap-1 font-medium">
+              Staff Portal (/connect/admin)
+            </Link>
+          </div>
         </div>
       </div>
     </footer>

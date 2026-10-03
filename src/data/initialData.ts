@@ -1,4 +1,35 @@
-import { Fingerling, BlogArticle, SiteSettings, OrderInquiry, Sale } from '../types';
+import { Fingerling, BlogArticle, SiteSettings, OrderInquiry, Sale, AdminUser, WhyChooseUsItem } from '../types';
+
+export const defaultWhyChooseUs: WhyChooseUsItem[] = [
+  {
+    id: "wcu-1",
+    title: "100% Pure Clarias batrachus Strain",
+    description: "Selective genetic broodstock conditioning guarantees disease resistance, fast meat conversion, and authentic native taste.",
+    icon: "Fish",
+    highlight: "Lab Certified"
+  },
+  {
+    id: "wcu-2",
+    title: "Continuous Oxygenated Recirculation",
+    description: "Advanced bio-filtration and monitored flow systems provide steady 7.5+ mg/L dissolved oxygen for zero-stress fingerling growth.",
+    icon: "Droplets",
+    highlight: "98% Water Purity"
+  },
+  {
+    id: "wcu-3",
+    title: "High Survival Rate (95%+)",
+    description: "Pre-conditioned for transport with salinity buffering and anti-stress acclimation before dispatch across Panay and beyond.",
+    icon: "ShieldCheck",
+    highlight: "Field Tested"
+  },
+  {
+    id: "wcu-4",
+    title: "Volume Tiered Pricing & Farmer Support",
+    description: "Transparent volume discounts tailored for both small-scale backyard fishponds and commercial aquaculture enterprises.",
+    icon: "TrendingUp",
+    highlight: "Direct Farm Rate"
+  }
+];
 
 export const defaultSiteSettings: SiteSettings = {
   id: "6a761e8b766d388f5d359488",
@@ -11,6 +42,12 @@ export const defaultSiteSettings: SiteSettings = {
   lat: 11.535766,
   lng: 122.652221,
   hero_image_url: "https://media.base44.com/images/public/6a761d1d3d52f761433ccbdd/8578c9fb0_generated_18cb20b1.png",
+  hero_images: [
+    "https://media.base44.com/images/public/6a761d1d3d52f761433ccbdd/8578c9fb0_generated_18cb20b1.png",
+    "https://base44.app/api/apps/6a761d1d3d52f761433ccbdd/files/mp/public/6a761d1d3d52f761433ccbdd/05615daa2_fishpon.jpg",
+    "https://base44.app/api/apps/6a761d1d3d52f761433ccbdd/files/mp/public/6a761d1d3d52f761433ccbdd/6667e565e_fingerlings.jpg",
+    "https://media.base44.com/images/public/6a761d1d3d52f761433ccbdd/019d7bdf3_generated_95e4fe92.png"
+  ],
   logo_url: "https://media.base44.com/images/public/6a761d1d3d52f761433ccbdd/b90195dea_ChatGPTImageJul112026at01_54_57PM.png",
   about_image_url: "https://base44.app/api/apps/6a761d1d3d52f761433ccbdd/files/mp/public/6a761d1d3d52f761433ccbdd/05615daa2_fishpon.jpg",
   about_images: [
@@ -20,10 +57,29 @@ export const defaultSiteSettings: SiteSettings = {
     "https://media.base44.com/images/public/6a761d1d3d52f761433ccbdd/019d7bdf3_generated_95e4fe92.png",
     "https://base44.app/api/apps/6a761d1d3d52f761433ccbdd/files/mp/public/6a761d1d3d52f761433ccbdd/1ba83e32a_juvie.jpg"
   ],
-  schedule: "Mon - Fri: 7:00 AM - 5:00 PM\nSaturday: By Appointment\nSunday: Closed",
+  schedule: "Mon - Fri: 7:00 AM - 5:00 PM\nSaturday: By Appointment\nSunday: Closed (Farm Maintenance)",
+  apple_maps_url: "https://maps.apple.com/?daddr=11.535766,122.652221",
   hero_badge: "Clarias batrachus Hatchery & Grower",
   hero_primary_btn_text: "View Catalog",
   hero_secondary_btn_text: "Place Order Inquiry",
+  why_choose_us: defaultWhyChooseUs,
+  smtp: {
+    host: "smtp.mailgun.org",
+    port: 587,
+    secure: false,
+    username: "notifications@mesina.farm",
+    password: "smtp_password_secret",
+    from_name: "Mesina Farms System",
+    from_email: "notifications@mesina.farm"
+  },
+  zitadel: {
+    enabled: false,
+    issuer_url: "https://auth.mesina.farm",
+    client_id: "278192039128392109@mesina_farms",
+    client_secret: "zitadel_sec_99a8b7c6",
+    scopes: "openid profile email urn:zitadel:iam:org:project:roles",
+    redirect_uri: window.location.origin + "/connect/admin"
+  },
   stats: [
     { label: "Fingerling Stages", value: "4+" },
     { label: "Water Quality", value: "98%" },
@@ -61,6 +117,8 @@ export const defaultFingerlings: Fingerling[] = [
   {
     id: "6a761e8bdb8dd58c561a10cf",
     name: "Starter Fingerlings",
+    scientific_name: "Clarias batrachus",
+    category: "Clarias batrachus",
     size_label: "2-3 cm",
     stock_count: 50000,
     low_stock_threshold: 5000,
@@ -73,14 +131,16 @@ export const defaultFingerlings: Fingerling[] = [
       "https://base44.app/api/apps/6a761d1d3d52f761433ccbdd/files/mp/public/6a761d1d3d52f761433ccbdd/6667e565e_fingerlings.jpg"
     ],
     price_tiers: [
-      { min_qty: 1, max_qty: 499, price_per_unit: 3.5 },
-      { min_qty: 500, max_qty: 4999, price_per_unit: 2.8 },
-      { min_qty: 5000, max_qty: null, price_per_unit: 2.2 }
+      { min_qty: 1, max_qty: 499, price_per_unit: 3.5, description: "Standard Backyard Pack (1 - 499 pcs)" },
+      { min_qty: 500, max_qty: 4999, price_per_unit: 2.8, description: "Small Grow-Out Discount (500 - 4,999 pcs)" },
+      { min_qty: 5000, max_qty: null, price_per_unit: 2.2, description: "Commercial Bulk Wholesale (5,000+ pcs)" }
     ]
   },
   {
     id: "6a761e8bdb8dd58c561a10d0",
     name: "Standard Grow-out",
+    scientific_name: "Clarias batrachus",
+    category: "Clarias batrachus",
     size_label: "5-8 cm",
     stock_count: 18000,
     low_stock_threshold: 2000,
@@ -93,14 +153,16 @@ export const defaultFingerlings: Fingerling[] = [
       "https://media.base44.com/images/public/6a761d1d3d52f761433ccbdd/019d7bdf3_generated_95e4fe92.png"
     ],
     price_tiers: [
-      { min_qty: 1, max_qty: 499, price_per_unit: 5.5 },
-      { min_qty: 500, max_qty: 2999, price_per_unit: 4.5 },
-      { min_qty: 3000, max_qty: null, price_per_unit: 3.8 }
+      { min_qty: 1, max_qty: 499, price_per_unit: 5.5, description: "Retail / Small Tank Starter (1 - 499 pcs)" },
+      { min_qty: 500, max_qty: 2999, price_per_unit: 4.5, description: "Mid-tier Volume Rate (500 - 2,999 pcs)" },
+      { min_qty: 3000, max_qty: null, price_per_unit: 3.8, description: "High-Volume Commercial Pond (3,000+ pcs)" }
     ]
   },
   {
     id: "6a761e8bdb8dd58c561a10d1",
     name: "Advance Stocker",
+    scientific_name: "Clarias batrachus",
+    category: "Clarias batrachus",
     size_label: "10-15 cm",
     stock_count: 7500,
     low_stock_threshold: 1000,
@@ -113,14 +175,16 @@ export const defaultFingerlings: Fingerling[] = [
       "https://media.base44.com/images/public/6a761d1d3d52f761433ccbdd/8578c9fb0_generated_18cb20b1.png"
     ],
     price_tiers: [
-      { min_qty: 1, max_qty: 299, price_per_unit: 12.0 },
-      { min_qty: 300, max_qty: 1999, price_per_unit: 10.0 },
-      { min_qty: 2000, max_qty: null, price_per_unit: 8.5 }
+      { min_qty: 1, max_qty: 299, price_per_unit: 12.0, description: "Standard Rate (1 - 299 pcs)" },
+      { min_qty: 300, max_qty: 1999, price_per_unit: 10.0, description: "Fast-Track Harvest Tier (300 - 1,999 pcs)" },
+      { min_qty: 2000, max_qty: null, price_per_unit: 8.5, description: "Enterprise Stocking Tier (2,000+ pcs)" }
     ]
   },
   {
     id: "6a761e8bdb8dd58c561a10d2",
     name: "Jumbo Stocker",
+    scientific_name: "Clarias batrachus",
+    category: "Clarias batrachus",
     size_label: "20-25 cm",
     stock_count: 1200,
     low_stock_threshold: 200,
@@ -128,14 +192,14 @@ export const defaultFingerlings: Fingerling[] = [
     description: "Top-tier Clarias batrachus at jumbo size. Ideal for immediate harvest preparation or as premium breeding stock with exceptional genetics.",
     image_url: "https://base44.app/api/apps/6a761d1d3d52f761433ccbdd/files/mp/public/6a761d1d3d52f761433ccbdd/1ba83e32a_juvie.jpg",
     images: [
-      "https://base44.app/api/apps/6a761d1d3d52f761433ccbdd/files/mp/public/6a761d1d3d52f761433ccbdd/1ba83e32a_juvie.jpg",
+      "https://base44.app/api/apps/6a761d1d3d52f761433ccbdd/1ba83e32a_juvie.jpg",
       "https://base44.app/api/apps/6a761d1d3d52f761433ccbdd/files/mp/public/6a761d1d3d52f761433ccbdd/05615daa2_fishpon.jpg",
       "https://media.base44.com/images/public/6a761d1d3d52f761433ccbdd/b00b4c562_generated_fb0c10ce.png"
     ],
     price_tiers: [
-      { min_qty: 1, max_qty: 99, price_per_unit: 35.0 },
-      { min_qty: 100, max_qty: 499, price_per_unit: 30.0 },
-      { min_qty: 500, max_qty: null, price_per_unit: 25.0 }
+      { min_qty: 1, max_qty: 99, price_per_unit: 35.0, description: "Selected Breeder / Table Size (1 - 99 pcs)" },
+      { min_qty: 100, max_qty: 499, price_per_unit: 30.0, description: "Batch Restock Discount (100 - 499 pcs)" },
+      { min_qty: 500, max_qty: null, price_per_unit: 25.0, description: "Commercial Harvest Supply (500+ pcs)" }
     ]
   }
 ];
@@ -146,10 +210,18 @@ export const defaultArticles: BlogArticle[] = [
     title: "Essential Water Quality Parameters for Clarias batrachus",
     excerpt: "Understanding temperature, pH, and dissolved oxygen is critical for healthy catfish. Learn the optimal ranges and how to maintain them.",
     category: "Water Quality",
-    author: "Mesina Farms",
+    author: "Mesina Farms Aquaculture Team",
     published_date: "2026-07-15",
     read_time: "5 min read",
     image_url: "https://media.base44.com/images/public/6a761d1d3d52f761433ccbdd/aa6a39100_generated_c37d0ca2.png",
+    images: [
+      "https://media.base44.com/images/public/6a761d1d3d52f761433ccbdd/aa6a39100_generated_c37d0ca2.png",
+      "https://media.base44.com/images/public/6a761d1d3d52f761433ccbdd/8578c9fb0_generated_18cb20b1.png",
+      "https://base44.app/api/apps/6a761d1d3d52f761433ccbdd/files/mp/public/6a761d1d3d52f761433ccbdd/05615daa2_fishpon.jpg"
+    ],
+    video_url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    video_type: "youtube",
+    status: "active",
     featured: true,
     content: `## Why Water Quality Matters
 
@@ -165,66 +237,76 @@ Water quality is the foundation of successful Clarias batrachus aquaculture. Poo
 
 ### Monitoring Tips
 
-- Test water daily during first month of stocking
-- Use aerators during hot weather
-- Perform partial water changes weekly
-- Monitor ammonia and nitrite levels regularly`
+- Test water daily during the first month of stocking
+- Use aerators during hot weather and dawn hours
+- Perform partial water changes weekly (15-20%)
+- Monitor ammonia and nitrite levels with liquid test kits regularly`
   },
   {
     id: "6a761e8b2f63ade9591752d0",
     title: "Setting Up Your Catfish Hatchery Tank System",
     excerpt: "A complete guide to designing and building an efficient Clarias batrachus hatchery from tank selection to filtration.",
     category: "Hatchery Setup",
-    author: "Mesina Farms",
+    author: "Mesina Farms Technical Staff",
     published_date: "2026-07-20",
     read_time: "7 min read",
     image_url: "https://media.base44.com/images/public/6a761d1d3d52f761433ccbdd/019d7bdf3_generated_95e4fe92.png",
+    images: [
+      "https://media.base44.com/images/public/6a761d1d3d52f761433ccbdd/019d7bdf3_generated_95e4fe92.png",
+      "https://base44.app/api/apps/6a761d1d3d52f761433ccbdd/files/mp/public/6a761d1d3d52f761433ccbdd/6667e565e_fingerlings.jpg"
+    ],
+    status: "active",
     featured: false,
     content: `## Planning Your Hatchery
 
-A well-designed hatchery system is essential for raising healthy Clarias batrachus fingerlings.
+A well-designed hatchery system is essential for raising healthy Clarias batrachus fingerlings with minimal mortality.
 
 ### Tank Selection
 
-Choose tanks made from food-grade materials. Circular tanks are preferred for better water circulation and waste removal.
+Choose tanks made from food-grade HDPE or smooth cement. Circular tanks are preferred for better water circulation and natural self-cleaning waste vortex.
 
 ### Filtration System
 
-Install a biofilter to maintain water quality. Mechanical filters remove solid waste, while biological filters process harmful ammonia into less toxic compounds.
+Install a multi-stage biofilter. Mechanical brush filters remove suspended solids, while volcanic cinder or moving bed bio-media (MBBR) neutralize toxic ammonia into harmless nitrates.
 
 ### Aeration
 
-Proper aeration ensures adequate dissolved oxygen. Use air stones or paddle wheel aerators depending on tank size and stocking density.`
+Proper continuous aeration maintains dissolved oxygen at peak saturation. Use regenerative blowers with ceramic air stones for uniform micro-bubble distribution.`
   },
   {
     id: "6a761e8b2f63ade9591752d1",
     title: "Fingerling Care: First 30 Days After Stocking",
     excerpt: "The critical first month determines survival rates. Follow this step-by-step guide to ensure your fingerlings thrive.",
     category: "Fingerling Care",
-    author: "Mesina Farms",
+    author: "Mesina Farms Biologists",
     published_date: "2026-07-25",
     read_time: "6 min read",
     image_url: "https://media.base44.com/images/public/6a761d1d3d52f761433ccbdd/a09c7d64d_generated_719509ff.png",
+    images: [
+      "https://media.base44.com/images/public/6a761d1d3d52f761433ccbdd/a09c7d64d_generated_719509ff.png",
+      "https://base44.app/api/apps/6a761d1d3d52f761433ccbdd/files/mp/public/6a761d1d3d52f761433ccbdd/1ba83e32a_juvie.jpg"
+    ],
+    status: "active",
     featured: false,
     content: `## The Critical First Month
 
-The first 30 days after stocking are crucial for Clarias batrachus fingerling survival and growth.
+The first 30 days after stocking represent 85% of total aquaculture risk. Careful acclimation and high-protein nutrition are decisive.
 
 ### Day 1-7: Acclimation
 
-Gradually acclimate fingerlings to pond water temperature. Avoid sudden temperature changes which can cause shock.
+Gradually float the oxygenated bags in pond water for 25 minutes. Slowly mix pond water into the bags before gently releasing the fingerlings.
 
-### Day 8-14: Feeding
+### Day 8-14: Micro-Feeding
 
-Begin feeding high-protein starter feed. Feed small amounts 4-5 times daily to prevent overfeeding and water pollution.
+Begin feeding extruded 42% protein starter crumble. Feed small amounts 4-5 times daily to ensure all sizes eat without polluting the pond bed.
 
 ### Day 15-21: Health Monitoring
 
-Watch for signs of disease such as erratic swimming or lesions. Remove any sick fish immediately to prevent spreading.
+Watch for signs of fungal patches or erratic spiraling. Maintain salt concentration at 1-2 ppt to protect fish slime coats.
 
-### Day 22-30: Growth Assessment
+### Day 22-30: Grading & Sorting
 
-Monitor growth rates and adjust feeding based on consumption patterns. Healthy fingerlings should show steady weight gain.`
+Separate fast growers (shooters) from smaller fingerlings to prevent cannibalism and guarantee uniform harvest batch weights.`
   }
 ];
 
@@ -238,6 +320,10 @@ export const defaultOrderInquiries: OrderInquiry[] = [
     quantity: 10000,
     message: "Requesting delivery to Roxas City pond facility by end of week.",
     status: "confirmed",
+    contact_status: "contacted",
+    contacted_by: "Super Administrator (super)",
+    contacted_date: "2026-08-05T11:00:00Z",
+    contact_notes: "Confirmed delivery schedule and transport bags via phone.",
     created_date: "2026-08-05T10:30:00Z"
   },
   {
@@ -249,6 +335,7 @@ export const defaultOrderInquiries: OrderInquiry[] = [
     quantity: 5000,
     message: "Inquiring about bulk discount and transport aeration bags.",
     status: "pending",
+    contact_status: "not_contacted",
     created_date: "2026-08-06T14:15:00Z"
   }
 ];
@@ -269,5 +356,42 @@ export const defaultSales: Sale[] = [
     quantity: 3000,
     total_amount: 25500,
     sale_date: "2026-08-03"
+  }
+];
+
+export const defaultAdminUsers: AdminUser[] = [
+  {
+    id: "user-super",
+    username: "super",
+    password: "abc123!",
+    name: "Super Administrator",
+    role: "super_admin",
+    permissions: [
+      "hero",
+      "about",
+      "why_choose_us",
+      "catalog",
+      "articles",
+      "inquiries",
+      "location",
+      "settings",
+      "smtp_zitadel",
+      "visitors"
+    ],
+    created_at: "2026-01-01T00:00:00Z"
+  },
+  {
+    id: "user-moderator",
+    username: "moderator",
+    password: "modpass123!",
+    name: "Company Website Moderator",
+    role: "moderator",
+    permissions: [
+      "catalog",
+      "articles",
+      "inquiries",
+      "why_choose_us"
+    ],
+    created_at: "2026-03-01T00:00:00Z"
   }
 ];

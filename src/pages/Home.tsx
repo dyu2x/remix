@@ -1,10 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Fish, Droplets, ShieldCheck, Activity, MapPin, Phone } from 'lucide-react';
+import { ArrowRight, Fish, Droplets, ShieldCheck, Activity, MapPin, Phone, Sparkles } from 'lucide-react';
 import { Fingerling, BlogArticle, SiteSettings } from '../types';
 import { OrderCalculator } from '../components/OrderCalculator';
-import { ImageWithFallback } from '../components/ImageWithFallback';
 import { AboutSlideshow } from '../components/AboutSlideshow';
+import { HeroSlideshow } from '../components/HeroSlideshow';
+import { WhyChooseUs } from '../components/WhyChooseUs';
+import { useLanguage } from '../context/LanguageContext';
 
 interface HomeProps {
   fingerlings: Fingerling[];
@@ -13,6 +15,8 @@ interface HomeProps {
 }
 
 export const Home: React.FC<HomeProps> = ({ fingerlings, settings }) => {
+  const { t } = useLanguage();
+
   const statIcons = [Fish, Droplets, ShieldCheck, Activity];
   const stats = settings.stats && settings.stats.length > 0
     ? settings.stats.map((s, idx) => ({
@@ -21,10 +25,10 @@ export const Home: React.FC<HomeProps> = ({ fingerlings, settings }) => {
         value: s.value
       }))
     : [
-        { icon: Fish, label: 'Fingerling Stages', value: '4+' },
-        { icon: Droplets, label: 'Water Quality', value: '98%' },
-        { icon: ShieldCheck, label: 'Survival Rate', value: '95%' },
-        { icon: Activity, label: 'Annual Output', value: '500K+' }
+        { icon: Fish, label: t.statsStages, value: '4+' },
+        { icon: Droplets, label: t.statsWater, value: '98%' },
+        { icon: ShieldCheck, label: t.statsSurvival, value: '95%' },
+        { icon: Activity, label: t.statsOutput, value: '500K+' }
       ];
 
   const aboutFeatures = settings.about_features && settings.about_features.length > 0
@@ -36,22 +40,21 @@ export const Home: React.FC<HomeProps> = ({ fingerlings, settings }) => {
         'Data-Driven Growth'
       ];
 
+  const heroImages = settings.hero_images && settings.hero_images.length > 0
+    ? settings.hero_images
+    : [settings.hero_image_url];
+
+  const aboutImages = settings.about_images && settings.about_images.length > 0
+    ? settings.about_images
+    : [settings.about_image_url];
+
   return (
     <div className="overflow-hidden">
-      {/* HERO SECTION */}
-      <section className="relative min-h-[90vh] flex items-center justify-center pt-24 pb-16">
-        <div className="absolute inset-0">
-          <ImageWithFallback
-            src={settings.hero_image_url}
-            alt="Clarias batrachus hatchery"
-            className="w-full h-full"
-            fittingType="fill"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/60 to-background" />
-          <div className="absolute inset-0 bg-gradient-to-r from-background/70 to-transparent" />
-        </div>
+      {/* HERO SECTION WITH MULTI-IMAGE SLIDESHOW */}
+      <section className="relative min-h-[92vh] flex items-center justify-center pt-24 pb-16">
+        <HeroSlideshow images={heroImages} alt={settings.farm_name} />
 
-        {/* Ambient floating dots */}
+        {/* Ambient floating elements */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           {[...Array(6)].map((_, i) => (
             <div
@@ -70,8 +73,8 @@ export const Home: React.FC<HomeProps> = ({ fingerlings, settings }) => {
         <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center py-16">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass mb-6 text-xs sm:text-sm border border-primary/30">
             <span className="w-2 h-2 rounded-full bg-accent animate-pulse-glow" />
-            <span className="text-muted-foreground font-medium">
-              {settings.hero_badge || "Clarias batrachus Hatchery & Grower"}
+            <span className="text-foreground font-semibold">
+              {settings.hero_badge || t.heroBadge}
             </span>
           </div>
 
@@ -88,14 +91,14 @@ export const Home: React.FC<HomeProps> = ({ fingerlings, settings }) => {
               to="/catalog"
               className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-all shadow-lg hover:shadow-primary/25 hover:scale-105"
             >
-              <span>{settings.hero_primary_btn_text || "View Catalog"}</span>
+              <span>{settings.hero_primary_btn_text || t.heroPrimaryBtn}</span>
               <ArrowRight className="w-4 h-4" />
             </Link>
             <Link
               to="/order-inquiry"
               className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl glass font-semibold text-foreground hover:ring-2 hover:ring-primary/40 transition-all hover:scale-105"
             >
-              {settings.hero_secondary_btn_text || "Place Order Inquiry"}
+              {settings.hero_secondary_btn_text || t.heroSecondaryBtn}
             </Link>
           </div>
         </div>
@@ -119,21 +122,24 @@ export const Home: React.FC<HomeProps> = ({ fingerlings, settings }) => {
         </div>
       </section>
 
+      {/* WHY CHOOSE US SECTION */}
+      <WhyChooseUs items={settings.why_choose_us} />
+
       {/* ABOUT MESINA FARMS */}
       <section className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <AboutSlideshow
-              images={settings.about_images && settings.about_images.length > 0 ? settings.about_images : [settings.about_image_url]}
+              images={aboutImages}
               title={settings.farm_name}
             />
 
             <div className="space-y-6">
               <div className="text-xs uppercase tracking-widest text-primary font-bold">
-                {settings.about_kicker || "About Mesina Farms"}
+                {settings.about_kicker || t.aboutKicker}
               </div>
               <h2 className="text-3xl sm:text-4xl font-extrabold text-foreground">
-                {settings.about_title || "The Science of Living Inventory"}
+                {settings.about_title || t.aboutTitle}
               </h2>
               <p className="text-muted-foreground text-sm sm:text-base leading-relaxed">
                 {settings.about_paragraph_1 || "At Mesina Farms, we transform traditional catfish aquaculture into a high-performance biological science. Our Clarias batrachus are raised in pristine, oxygen-rich environments with continuous water quality monitoring."}
@@ -164,13 +170,13 @@ export const Home: React.FC<HomeProps> = ({ fingerlings, settings }) => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <div className="text-xs uppercase tracking-widest text-primary font-bold mb-2">
-              {settings.calc_kicker || "Instant Quote"}
+              {settings.calc_kicker || t.calcKicker}
             </div>
             <h2 className="text-3xl sm:text-5xl font-extrabold mb-4 text-foreground">
-              {settings.calc_title || "Calculate Your Order"}
+              {settings.calc_title || t.calcTitle}
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto text-sm sm:text-base">
-              {settings.calc_subtitle || "Select a fingerling stage and quantity to instantly see volume-based tier pricing and your total cost."}
+              {settings.calc_subtitle || t.calcSubtitle}
             </p>
           </div>
 
@@ -184,7 +190,7 @@ export const Home: React.FC<HomeProps> = ({ fingerlings, settings }) => {
           <div className="glass-card rounded-3xl p-8 sm:p-12 border border-border/60 shadow-2xl space-y-4">
             <MapPin className="w-12 h-12 text-primary mx-auto" />
             <h2 className="text-3xl sm:text-4xl font-extrabold text-foreground">
-              {settings.visit_title || "Visit Our Hatchery"}
+              {settings.visit_title || t.locationTitle}
             </h2>
             <p className="text-muted-foreground text-sm sm:text-base">{settings.address}</p>
             <p className="text-sm text-muted-foreground flex items-center justify-center gap-2">
@@ -195,7 +201,7 @@ export const Home: React.FC<HomeProps> = ({ fingerlings, settings }) => {
                 to="/location"
                 className="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-all shadow-lg hover:shadow-primary/25 hover:scale-105"
               >
-                <span>Get Directions</span>
+                <span>Get Directions & Routing</span>
                 <ArrowRight className="w-4 h-4" />
               </Link>
             </div>

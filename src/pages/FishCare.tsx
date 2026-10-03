@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { BookOpen, Clock, Calendar, User, X, CheckCircle, ArrowRight } from 'lucide-react';
+import { BookOpen, Clock, Calendar, User, X, CheckCircle, ArrowRight, Video, Camera, ChevronLeft, ChevronRight } from 'lucide-react';
 import { BlogArticle } from '../types';
 import { ImageWithFallback } from '../components/ImageWithFallback';
 import { WaterQualityChecker } from '../components/WaterQualityChecker';
+import { VideoPlayer } from '../components/VideoPlayer';
 
 interface FishCareProps {
   articles: BlogArticle[];
@@ -11,15 +12,20 @@ interface FishCareProps {
 export const FishCare: React.FC<FishCareProps> = ({ articles }) => {
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [activeArticle, setActiveArticle] = useState<BlogArticle | null>(null);
+  const [activeImageIndex, setActiveImageIndex] = useState<number>(0);
   const [readProgress, setReadProgress] = useState<number>(0);
 
-  const categories = ['All', ...Array.from(new Set(articles.map(a => a.category)))];
+  // Only display active articles on the public page
+  const activeArticles = articles.filter(a => a.status === 'active' || !a.status);
+
+  const categories = ['All', ...Array.from(new Set(activeArticles.map(a => a.category)))];
 
   const filteredArticles = selectedCategory === 'All'
-    ? articles
-    : articles.filter(a => a.category === selectedCategory);
+    ? activeArticles
+    : activeArticles.filter(a => a.category === selectedCategory);
 
   useEffect(() => {
+    setActiveImageIndex(0);
     if (!activeArticle) {
       setReadProgress(0);
       return;
@@ -83,51 +89,71 @@ export const FishCare: React.FC<FishCareProps> = ({ articles }) => {
 
         {/* ARTICLES GRID */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredArticles.map(article => (
-            <div
-              key={article.id}
-              onClick={() => setActiveArticle(article)}
-              className="glass-card rounded-3xl overflow-hidden cursor-pointer group hover:ring-2 hover:ring-primary/40 transition-all duration-300 flex flex-col justify-between"
-            >
-              <div>
-                <div className="relative aspect-[16/9] overflow-hidden">
-                  <ImageWithFallback
-                    src={article.image_url}
-                    alt={article.title}
-                    className="w-full h-full group-hover:scale-105 transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
-                  <div className="absolute top-3 left-3 px-3 py-1 rounded-full bg-primary/80 text-primary-foreground text-xs font-semibold backdrop-blur-md">
-                    {article.category}
+          {filteredArticles.map(article => {
+            const articleImages = article.images && article.images.length > 0 ? article.images : [article.image_url];
+            return (
+              <div
+                key={article.id}
+                onClick={() => {
+                  setActiveArticle(article);
+                  setActiveImageIndex(0);
+                }}
+                className="glass-card rounded-3xl overflow-hidden cursor-pointer group hover:ring-2 hover:ring-primary/40 transition-all duration-300 flex flex-col justify-between"
+              >
+                <div>
+                  <div className="relative aspect-[16/9] overflow-hidden bg-black/30">
+                    <ImageWithFallback
+                      src={article.image_url || articleImages[0]}
+                      alt={article.title}
+                      className="w-full h-full group-hover:scale-105 transition-transform duration-500 object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/75 to-transparent pointer-events-none" />
+                    
+                    <div className="absolute top-3 left-3 px-3 py-1 rounded-full bg-primary/85 text-primary-foreground text-xs font-semibold backdrop-blur-md">
+                      {article.category}
+                    </div>
+
+                    <div className="absolute top-3 right-3 flex items-center gap-1.5">
+                      {article.video_url && (
+                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-red-600/90 text-white text-[11px] font-bold backdrop-blur-md">
+                          <Video className="w-3 h-3" /> Video
+                        </span>
+                      )}
+                      {articleImages.length > 1 && (
+                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-black/60 text-white text-[11px] font-bold backdrop-blur-md">
+                          <Camera className="w-3 h-3" /> {articleImages.length}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="p-6 space-y-3">
+                    <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                      <span className="flex items-center gap-1">
+                        <Clock className="w-3.5 h-3.5 text-primary" /> {article.read_time}
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <Calendar className="w-3.5 h-3.5 text-primary" /> {article.published_date}
+                      </span>
+                    </div>
+
+                    <h3 className="font-bold text-lg sm:text-xl text-foreground group-hover:text-primary transition-colors line-clamp-2">
+                      {article.title}
+                    </h3>
+
+                    <p className="text-xs sm:text-sm text-muted-foreground line-clamp-3 leading-relaxed">
+                      {article.excerpt}
+                    </p>
                   </div>
                 </div>
 
-                <div className="p-6 space-y-3">
-                  <div className="flex items-center gap-4 text-xs text-muted-foreground">
-                    <span className="flex items-center gap-1">
-                      <Clock className="w-3.5 h-3.5 text-primary" /> {article.read_time}
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <Calendar className="w-3.5 h-3.5 text-primary" /> {article.published_date}
-                    </span>
-                  </div>
-
-                  <h3 className="font-bold text-lg sm:text-xl text-foreground group-hover:text-primary transition-colors line-clamp-2">
-                    {article.title}
-                  </h3>
-
-                  <p className="text-xs sm:text-sm text-muted-foreground line-clamp-3 leading-relaxed">
-                    {article.excerpt}
-                  </p>
+                <div className="p-6 pt-0 flex items-center justify-between text-xs font-semibold text-primary">
+                  <span>Read Full Article</span>
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </div>
               </div>
-
-              <div className="p-6 pt-0 flex items-center justify-between text-xs font-semibold text-primary">
-                <span>Read Full Article</span>
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 
@@ -139,7 +165,7 @@ export const FishCare: React.FC<FishCareProps> = ({ articles }) => {
             onClick={() => setActiveArticle(null)}
           />
 
-          <div className="relative w-full max-w-3xl bg-card border border-border/80 rounded-3xl shadow-2xl overflow-hidden z-10 flex flex-col max-h-[85vh] animate-scale-in">
+          <div className="relative w-full max-w-3xl bg-card border border-border/80 rounded-3xl shadow-2xl overflow-hidden z-10 flex flex-col max-h-[88vh] animate-scale-in">
             {/* Reading Progress Indicator */}
             <div
               className="h-1 bg-primary transition-all duration-150"
@@ -161,13 +187,82 @@ export const FishCare: React.FC<FishCareProps> = ({ articles }) => {
 
             {/* Modal Body */}
             <div id="article-modal-content" className="p-6 sm:p-8 overflow-y-auto space-y-6">
-              <div className="relative aspect-[2/1] rounded-2xl overflow-hidden">
-                <ImageWithFallback
-                  src={activeArticle.image_url}
-                  alt={activeArticle.title}
-                  className="w-full h-full"
-                />
-              </div>
+              {/* Image Carousel / Multi-image Gallery */}
+              {(() => {
+                const articleImages = activeArticle.images && activeArticle.images.length > 0
+                  ? activeArticle.images
+                  : [activeArticle.image_url];
+                const activeImg = articleImages[activeImageIndex] || activeArticle.image_url;
+
+                return (
+                  <div className="space-y-3">
+                    <div className="relative aspect-[2/1] rounded-2xl overflow-hidden bg-black/40">
+                      <ImageWithFallback
+                        src={activeImg}
+                        alt={`${activeArticle.title} - photo ${activeImageIndex + 1}`}
+                        className="w-full h-full object-cover"
+                      />
+                      {articleImages.length > 1 && (
+                        <>
+                          <button
+                            type="button"
+                            onClick={() => setActiveImageIndex(prev => (prev === 0 ? articleImages.length - 1 : prev - 1))}
+                            className="absolute left-3 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/60 text-white hover:bg-black/90 transition-all"
+                            aria-label="Previous image"
+                          >
+                            <ChevronLeft className="w-4 h-4" />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setActiveImageIndex(prev => (prev === articleImages.length - 1 ? 0 : prev + 1))}
+                            className="absolute right-3 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/60 text-white hover:bg-black/90 transition-all"
+                            aria-label="Next image"
+                          >
+                            <ChevronRight className="w-4 h-4" />
+                          </button>
+                          <div className="absolute bottom-3 right-3 px-3 py-1 rounded-full bg-black/70 text-white text-xs font-semibold">
+                            {activeImageIndex + 1} / {articleImages.length}
+                          </div>
+                        </>
+                      )}
+                    </div>
+
+                    {/* Thumbnails row */}
+                    {articleImages.length > 1 && (
+                      <div className="flex gap-2 overflow-x-auto pb-1">
+                        {articleImages.map((img, idx) => (
+                          <button
+                            key={idx}
+                            type="button"
+                            onClick={() => setActiveImageIndex(idx)}
+                            className={`w-16 h-12 rounded-xl overflow-hidden shrink-0 border-2 transition-all ${
+                              idx === activeImageIndex
+                                ? 'border-primary ring-2 ring-primary/30 scale-105'
+                                : 'border-border/60 opacity-60 hover:opacity-100'
+                            }`}
+                          >
+                            <img src={img} alt="thumbnail" className="w-full h-full object-cover" />
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                );
+              })()}
+
+              {/* Video Player if present */}
+              {activeArticle.video_url && (
+                <div className="space-y-2">
+                  <div className="text-xs font-bold uppercase tracking-wider text-primary flex items-center gap-1.5">
+                    <Video className="w-4 h-4" /> Featured Video Guide
+                  </div>
+                  <VideoPlayer
+                    url={activeArticle.video_url}
+                    type={activeArticle.video_type}
+                    title={activeArticle.title}
+                  />
+                </div>
+              )}
 
               <div className="space-y-2">
                 <h2 className="text-2xl sm:text-3xl font-extrabold text-foreground">

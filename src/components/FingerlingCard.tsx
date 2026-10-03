@@ -161,17 +161,29 @@ export const FingerlingCard: React.FC<FingerlingCardProps> = ({ fingerling }) =>
             <Maximize2 className="w-3.5 h-3.5" />
           </button>
 
-          {/* Name in Image Footer */}
+          {/* Name & Category in Image Footer */}
           <div className="absolute bottom-3 left-4 right-10 pointer-events-none">
+            {fingerling.scientific_name && (
+              <div className="text-[11px] italic text-emerald-300 drop-shadow-md">
+                {fingerling.scientific_name}
+              </div>
+            )}
             <h3 className="text-xl font-bold text-white tracking-tight drop-shadow-md">{fingerling.name}</h3>
           </div>
         </div>
 
         {/* Card Body */}
         <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
-          <p className="text-sm text-muted-foreground line-clamp-3 leading-relaxed">
-            {fingerling.description}
-          </p>
+          <div className="space-y-2">
+            {fingerling.category && (
+              <span className="inline-block text-[10px] font-bold px-2 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/20">
+                {fingerling.category}
+              </span>
+            )}
+            <p className="text-sm text-muted-foreground line-clamp-3 leading-relaxed">
+              {fingerling.description}
+            </p>
+          </div>
 
           {/* Multiple Image Mini Thumbnails if > 1 */}
           {images.length > 1 && (
@@ -203,6 +215,7 @@ export const FingerlingCard: React.FC<FingerlingCardProps> = ({ fingerling }) =>
                   return (
                     <div
                       key={i}
+                      title={t.description || `${t.max_qty ? `${t.min_qty} - ${t.max_qty}` : `${t.min_qty}+`} pcs`}
                       className={`py-1 px-1.5 rounded-lg transition-all ${
                         isActive
                           ? 'bg-primary text-primary-foreground font-bold shadow-sm'
@@ -210,7 +223,10 @@ export const FingerlingCard: React.FC<FingerlingCardProps> = ({ fingerling }) =>
                       }`}
                     >
                       <div>{t.max_qty ? `${t.min_qty}-${t.max_qty}` : `${t.min_qty}+`}</div>
-                      <div className="text-[11px]">₱{t.price_per_unit.toFixed(2)}</div>
+                      <div className="text-[11px] font-bold">₱{t.price_per_unit.toFixed(2)}</div>
+                      {t.description && (
+                        <div className="text-[9px] truncate opacity-80 mt-0.5">{t.description}</div>
+                      )}
                     </div>
                   );
                 })}

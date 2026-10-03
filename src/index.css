@@ -146,32 +146,21 @@
   animation: slide-up 0.4s ease-out forwards;
 }
 
-@keyframes cloud-float {
+@keyframes blink-green {
   0%, 100% {
-    transform: translateY(0px) rotate(0deg);
+    opacity: 1;
+    box-shadow: 0 0 16px rgba(16, 185, 129, 0.75), 0 0 4px rgba(16, 185, 129, 0.9);
+    border-color: rgba(16, 185, 129, 0.9);
   }
   50% {
-    transform: translateY(-9px) rotate(-1.5deg);
+    opacity: 0.45;
+    box-shadow: 0 0 4px rgba(16, 185, 129, 0.2);
+    border-color: rgba(16, 185, 129, 0.3);
   }
 }
 
-@keyframes cloud-shadow {
-  0%, 100% {
-    transform: scale(1);
-    opacity: 0.35;
-  }
-  50% {
-    transform: scale(0.72);
-    opacity: 0.15;
-  }
-}
-
-.animate-cloud-float {
-  animation: cloud-float 3.4s ease-in-out infinite;
-}
-
-.animate-cloud-shadow {
-  animation: cloud-shadow 3.4s ease-in-out infinite;
+.animate-blink-green {
+  animation: blink-green 1.2s ease-in-out infinite;
 }
 
 

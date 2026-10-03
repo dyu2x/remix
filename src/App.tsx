@@ -4,6 +4,7 @@ import { ThemeProvider } from './context/ThemeContext';
 import { LanguageProvider } from './context/LanguageContext';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
+import { LivechatStatusTag } from './components/LivechatStatusTag';
 import { Home } from './pages/Home';
 import { Catalog } from './pages/Catalog';
 import { FishCare } from './pages/FishCare';
@@ -11,7 +12,6 @@ import { Location } from './pages/Location';
 import { OrderInquiry } from './pages/OrderInquiry';
 import { Admin } from './pages/Admin';
 import { NotFound } from './pages/NotFound';
-import { LiveChatWidget } from './components/LiveChatWidget';
 import {
   defaultSiteSettings,
   defaultFingerlings,
@@ -27,7 +27,6 @@ const RouteTracker = () => {
   const { pathname } = useLocation();
   useEffect(() => {
     window.scrollTo(0, 0);
-    document.title = 'Mesina Farms';
     recordVisitorVisit(pathname);
   }, [pathname]);
   return null;
@@ -210,7 +209,7 @@ export default function App() {
             </main>
 
             <Footer settings={settings} />
-            <LiveChatWidget />
+            <LivechatStatusTag />
           </div>
         </BrowserRouter>
       </LanguageProvider>

@@ -26,6 +26,7 @@ const RouteTracker = () => {
   const { pathname } = useLocation();
   useEffect(() => {
     window.scrollTo(0, 0);
+    document.title = 'Mesina Farms';
     recordVisitorVisit(pathname);
   }, [pathname]);
   return null;

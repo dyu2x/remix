@@ -184,16 +184,6 @@ export const Navbar: React.FC<NavbarProps> = ({ settings }) => {
               )}
             </button>
 
-            {/* Direct Admin Portal Entrance */}
-            <Link
-              to="/connect/admin"
-              className="p-2.5 rounded-full glass hover:bg-primary hover:text-primary-foreground transition-all text-muted-foreground"
-              title="Staff / Admin Portal (/connect/admin)"
-              aria-label="Admin Portal"
-            >
-              <Shield className="w-4 h-4 sm:w-5 sm:h-5" />
-            </Link>
-
             {/* Mobile Hamburger Toggle */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -257,16 +247,6 @@ export const Navbar: React.FC<NavbarProps> = ({ settings }) => {
                   </button>
                 ))}
               </div>
-            </div>
-
-            <div className="pt-2 border-t border-border/40">
-              <Link
-                to="/connect/admin"
-                className="w-full flex items-center justify-center gap-2 py-3 rounded-2xl glass text-xs font-semibold text-foreground hover:bg-muted"
-              >
-                <Shield className="w-4 h-4 text-primary" />
-                <span>Access Admin Portal (/connect/admin)</span>
-              </Link>
             </div>
           </div>
         </div>

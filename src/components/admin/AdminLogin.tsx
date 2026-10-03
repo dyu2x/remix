@@ -15,8 +15,8 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({
   onLoginSuccess,
   onResetPassword
 }) => {
-  const [username, setUsername] = useState('super');
-  const [password, setPassword] = useState('abc123!');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [showForgot, setShowForgot] = useState(false);
   const [resetUser, setResetUser] = useState('');
@@ -154,12 +154,6 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({
                 <span>Sign in with Self-Hosted Zitadel SSO</span>
               </button>
             )}
-
-            <div className="p-3 rounded-2xl bg-muted/30 border border-border/40 text-[11px] text-muted-foreground space-y-1">
-              <div className="font-semibold text-foreground">Pre-configured Accounts:</div>
-              <div>• Super Admin: <code className="text-primary font-bold">super</code> / <code className="text-primary font-bold">abc123!</code></div>
-              <div>• Moderator: <code className="text-primary font-bold">moderator</code> / <code className="text-primary font-bold">modpass123!</code></div>
-            </div>
           </form>
         ) : (
           <form onSubmit={handleResetSubmit} className="space-y-4">

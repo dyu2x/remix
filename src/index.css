@@ -146,105 +146,32 @@
   animation: slide-up 0.4s ease-out forwards;
 }
 
-/* ==========================================================================
-   ROCKET.CHAT LIVECHAT ELEGANT CUSTOM STYLING
-   - Launcher Shape: Pure Circle (Zero Square Edges)
-   - Window Interface: Floating, Ultra-Smooth (Zero Sharp Corners)
-   ========================================================================== */
-
-/* 1. CLOSED STATE: CIRCLE LAUNCHER SHAPE */
-.rocketchat-widget[data-state="closed"],
-.rocketchat-widget:not([data-state="opened"]):not([data-state="triggered"]) {
-  width: 64px !important;
-  height: 64px !important;
-  bottom: 24px !important;
-  right: 24px !important;
-  border-radius: 50% !important;
-  clip-path: circle(50% at 50% 50%) !important;
-  overflow: hidden !important;
-  border: none !important;
-  box-shadow: 0 12px 32px -4px rgba(14, 165, 233, 0.45), 0 4px 16px rgba(0, 0, 0, 0.2) !important;
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
-}
-
-.rocketchat-widget[data-state="closed"]:hover,
-.rocketchat-widget:not([data-state="opened"]):not([data-state="triggered"]):hover {
-  transform: scale(1.08) translateY(-2px) !important;
-  box-shadow: 0 18px 40px -4px rgba(14, 165, 233, 0.6), 0 6px 20px rgba(0, 0, 0, 0.3) !important;
-}
-
-.rocketchat-widget[data-state="closed"] .rocketchat-container,
-.rocketchat-widget[data-state="closed"] #rocketchat-iframe,
-.rocketchat-widget:not([data-state="opened"]):not([data-state="triggered"]) .rocketchat-container,
-.rocketchat-widget:not([data-state="opened"]):not([data-state="triggered"]) #rocketchat-iframe {
-  width: 100% !important;
-  height: 100% !important;
-  border-radius: 50% !important;
-  clip-path: circle(50% at 50% 50%) !important;
-  overflow: hidden !important;
-  border: none !important;
-}
-
-/* 2. OPENED STATE: ELEGANT FLOATING WINDOW WITH ZERO CORNERS */
-.rocketchat-widget[data-state="opened"],
-.rocketchat-widget[data-state="triggered"],
-.rocketchat-widget.rc-opened {
-  bottom: 24px !important;
-  right: 24px !important;
-  max-height: calc(100vh - 48px) !important;
-  max-width: calc(100vw - 48px) !important;
-  border-radius: 36px !important;
-  overflow: hidden !important;
-  border: none !important;
-  box-shadow: 0 30px 80px -15px rgba(0, 0, 0, 0.5),
-              0 0 0 1px rgba(255, 255, 255, 0.18),
-              0 14px 35px -6px rgba(0, 0, 0, 0.3) !important;
-  backdrop-filter: blur(24px) !important;
-  -webkit-backdrop-filter: blur(24px) !important;
-  animation: rc-window-appear 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
-  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
-  z-index: 99999 !important;
-}
-
-.rocketchat-widget[data-state="opened"] .rocketchat-container,
-.rocketchat-widget[data-state="opened"] #rocketchat-iframe,
-.rocketchat-widget[data-state="triggered"] .rocketchat-container,
-.rocketchat-widget[data-state="triggered"] #rocketchat-iframe,
-.rocketchat-widget.rc-opened .rocketchat-container,
-.rocketchat-widget.rc-opened #rocketchat-iframe {
-  border-radius: 36px !important;
-  overflow: hidden !important;
-  border: none !important;
-  outline: none !important;
-}
-
-/* Mobile Responsiveness: Floating smooth curve */
-@media (max-width: 640px) {
-  .rocketchat-widget[data-state="opened"],
-  .rocketchat-widget[data-state="triggered"],
-  .rocketchat-widget.rc-opened {
-    bottom: 12px !important;
-    right: 12px !important;
-    left: 12px !important;
-    width: calc(100vw - 24px) !important;
-    max-height: calc(100vh - 24px) !important;
-    border-radius: 30px !important;
+@keyframes cloud-float {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
   }
-  .rocketchat-widget[data-state="opened"] .rocketchat-container,
-  .rocketchat-widget[data-state="opened"] #rocketchat-iframe {
-    border-radius: 30px !important;
+  50% {
+    transform: translateY(-9px) rotate(-1.5deg);
   }
 }
 
-@keyframes rc-window-appear {
-  0% {
-    opacity: 0;
-    transform: translateY(24px) scale(0.94);
+@keyframes cloud-shadow {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.35;
   }
-  100% {
-    opacity: 1;
-    transform: translateY(0) scale(1);
+  50% {
+    transform: scale(0.72);
+    opacity: 0.15;
   }
+}
+
+.animate-cloud-float {
+  animation: cloud-float 3.4s ease-in-out infinite;
+}
+
+.animate-cloud-shadow {
+  animation: cloud-shadow 3.4s ease-in-out infinite;
 }
 
 

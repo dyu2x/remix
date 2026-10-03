@@ -11,6 +11,7 @@ import { Location } from './pages/Location';
 import { OrderInquiry } from './pages/OrderInquiry';
 import { Admin } from './pages/Admin';
 import { NotFound } from './pages/NotFound';
+import { LiveChatWidget } from './components/LiveChatWidget';
 import {
   defaultSiteSettings,
   defaultFingerlings,
@@ -209,6 +210,7 @@ export default function App() {
             </main>
 
             <Footer settings={settings} />
+            <LiveChatWidget />
           </div>
         </BrowserRouter>
       </LanguageProvider>

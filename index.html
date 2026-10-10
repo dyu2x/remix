@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>eMesina Aqua Farm</title>
+    <link rel="icon" type="image/png" href="/round_transparent.png" />
+    <link rel="apple-touch-icon" href="/round_transparent.png" />
+    <meta name="description" content="eMesina Aqua Farm — Premium Clarias batrachus catfish hatchery and grower. Scientifically bred, sustainably raised fingerlings for aquaculture excellence." />
+    <meta property="og:title" content="eMesina Aqua Farm" />
+    <meta property="og:description" content="eMesina Aqua Farm — Premium Clarias batrachus catfish hatchery and grower. Scientifically bred, sustainably raised fingerlings for aquaculture excellence." />
+    <meta property="og:type" content="website" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+
+    <!-- Start of Rocket.Chat Livechat Script -->
+    <script type="text/javascript">
+    (function(w, d, s, u) {
+      w.RocketChat = function(c) { w.RocketChat._.push(c) }; w.RocketChat._ = []; w.RocketChat.url = u;
+      var h = d.getElementsByTagName(s)[0], j = d.createElement(s);
+      j.async = true; j.src = 'https://messenger.mesina.farm/livechat/rocketchat-livechat.min.js?_=201903270000';
+      h.parentNode.insertBefore(j, h);
+    })(window, document, 'script', 'https://messenger.mesina.farm/livechat');
+
+    RocketChat(function() {
+      var self = this;
+      if (typeof self.onServiceStatusChanged === 'function') {
+        self.onServiceStatusChanged(function(status) {
+          window.dispatchEvent(new CustomEvent('rocketChatStatus', { detail: { status: status } }));
+        });
+      }
+      if (typeof self.onAgentStatusChange === 'function') {
+        self.onAgentStatusChange(function(status) {
+          window.dispatchEvent(new CustomEvent('rocketChatAgentStatus', { detail: { status: status } }));
+        });
+      }
+      if (typeof self.onChatMaximized === 'function') {
+        self.onChatMaximized(function() {
+          window.dispatchEvent(new CustomEvent('rocketChatVisibility', { detail: { open: true } }));
+        });
+      }
+      if (typeof self.onChatMinimized === 'function') {
+        self.onChatMinimized(function() {
+          window.dispatchEvent(new CustomEvent('rocketChatVisibility', { detail: { open: false } }));
+        });
+      }
+    });
+    </script>
+  </body>
+</html>
+

@@ -1,0 +1,8 @@
+{
+  "name": "Remix Farmv2",
+  "description": "eMesina Aqua Farm — Premium Clarias batrachus catfish hatchery and grower. Scientifically bred, sustainably raised fingerlings for aquaculture excellence.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

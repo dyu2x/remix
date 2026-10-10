@@ -1,0 +1,219 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { ArrowRight, Fish, Droplets, ShieldCheck, Activity, MapPin, Phone, Sparkles } from 'lucide-react';
+import { Fingerling, BlogArticle, SiteSettings } from '../types';
+import { OrderCalculator } from '../components/OrderCalculator';
+import { AboutSlideshow } from '../components/AboutSlideshow';
+import { HeroSlideshow } from '../components/HeroSlideshow';
+import { WhyChooseUs } from '../components/WhyChooseUs';
+import { useLanguage } from '../context/LanguageContext';
+
+interface HomeProps {
+  fingerlings: Fingerling[];
+  articles: BlogArticle[];
+  settings: SiteSettings;
+}
+
+export const Home: React.FC<HomeProps> = ({ fingerlings, settings }) => {
+  const { t } = useLanguage();
+
+  const statIcons = [Fish, Droplets, ShieldCheck, Activity];
+  const stats = settings.stats && settings.stats.length > 0
+    ? settings.stats.map((s, idx) => ({
+        icon: statIcons[idx % statIcons.length],
+        label: s.label,
+        value: s.value
+      }))
+    : [
+        { icon: Fish, label: t.statsStages, value: '4+' },
+        { icon: Droplets, label: t.statsWater, value: '98%' },
+        { icon: ShieldCheck, label: t.statsSurvival, value: '95%' },
+        { icon: Activity, label: t.statsOutput, value: '500K+' }
+      ];
+
+  const aboutFeatures = settings.about_features && settings.about_features.length > 0
+    ? settings.about_features
+    : [
+        'Pristine Water Systems',
+        'Bio-Secure Facilities',
+        'Pure Clarias batrachus',
+        'Data-Driven Growth'
+      ];
+
+  const heroImages = settings.hero_images && settings.hero_images.length > 0
+    ? settings.hero_images
+    : [settings.hero_image_url];
+
+  const aboutImages = settings.about_images && settings.about_images.length > 0
+    ? settings.about_images
+    : [settings.about_image_url];
+
+  return (
+    <div className="overflow-hidden">
+      {/* HERO SECTION WITH MULTI-IMAGE SLIDESHOW */}
+      <section className="relative min-h-[92vh] flex items-center justify-center pt-24 pb-16">
+        <HeroSlideshow
+          images={heroImages}
+          alt={settings.farm_name}
+          intervalSeconds={settings.hero_interval_seconds}
+          transitionDurationSeconds={settings.hero_transition_duration_seconds}
+          transitionEffect={settings.hero_transition_effect}
+        />
+
+        {/* Ambient floating elements */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          {[...Array(6)].map((_, i) => (
+            <div
+              key={i}
+              className="absolute w-2.5 h-2.5 rounded-full bg-primary/25 animate-float"
+              style={{
+                left: `${10 + i * 15}%`,
+                top: `${20 + (i % 3) * 25}%`,
+                animationDelay: `${i * 0.5}s`,
+                animationDuration: `${5 + i}s`
+              }}
+            />
+          ))}
+        </div>
+
+        <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center py-16">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass mb-6 text-xs sm:text-sm border border-primary/30">
+            <span className="w-2 h-2 rounded-full bg-accent animate-pulse-glow" />
+            <span className="text-foreground font-semibold">
+              {settings.hero_badge || t.heroBadge}
+            </span>
+          </div>
+
+          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight mb-6">
+            <span className="hydro-text">{settings.hero_title}</span>
+          </h1>
+
+          <p className="text-base sm:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto leading-relaxed">
+            {settings.hero_subtitle}
+          </p>
+
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link
+              to="/catalog"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-all shadow-lg hover:shadow-primary/25 hover:scale-105"
+            >
+              <span>{settings.hero_primary_btn_text || t.heroPrimaryBtn}</span>
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+            <Link
+              to="/order-inquiry"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl glass font-semibold text-foreground hover:ring-2 hover:ring-primary/40 transition-all hover:scale-105"
+            >
+              {settings.hero_secondary_btn_text || t.heroSecondaryBtn}
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* STATS BAR */}
+      <section className="py-12 border-y border-border/40 bg-card/20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+            {stats.map((stat, i) => (
+              <div
+                key={i}
+                className="glass-card rounded-2xl p-6 text-center hover:ring-2 hover:ring-primary/30 transition-all"
+              >
+                <stat.icon className="w-8 h-8 text-primary mx-auto mb-3" />
+                <div className="text-3xl font-extrabold hydro-text">{stat.value}</div>
+                <div className="text-xs sm:text-sm text-muted-foreground mt-1 font-medium">{stat.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* WHY CHOOSE US SECTION */}
+      <WhyChooseUs items={settings.why_choose_us} />
+
+      {/* ABOUT MESINA FARMS */}
+      <section className="py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <AboutSlideshow
+              images={aboutImages}
+              title={settings.farm_name}
+            />
+
+            <div className="space-y-6">
+              <div className="text-xs uppercase tracking-widest text-primary font-bold">
+                {settings.about_kicker || t.aboutKicker}
+              </div>
+              <h2 className="text-3xl sm:text-4xl font-extrabold text-foreground">
+                {settings.about_title || t.aboutTitle}
+              </h2>
+              <p className="text-muted-foreground text-sm sm:text-base leading-relaxed">
+                {settings.about_paragraph_1 || "At Mesina Farms, we transform traditional catfish aquaculture into a high-performance biological science. Our Clarias batrachus are raised in pristine, oxygen-rich environments with continuous water quality monitoring."}
+              </p>
+              <p className="text-muted-foreground text-sm sm:text-base leading-relaxed">
+                {settings.about_paragraph_2 || "From delicate starter fingerlings to robust jumbo stockers, every growth stage is managed with precision to ensure optimal health, rapid growth, and exceptional survival rates."}
+              </p>
+
+              <div className="grid grid-cols-2 gap-4 pt-2">
+                {aboutFeatures.map((item, idx) => {
+                  const iconList = [Droplets, ShieldCheck, Fish, Activity];
+                  const IconComp = iconList[idx % iconList.length];
+                  return (
+                    <div key={idx} className="flex items-center gap-2.5 text-xs sm:text-sm font-medium">
+                      <IconComp className="w-4 h-4 text-primary shrink-0" />
+                      <span>{item}</span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* INSTANT CALCULATOR SECTION */}
+      <section className="py-20 bg-card/30 border-y border-border/40">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <div className="text-xs uppercase tracking-widest text-primary font-bold mb-2">
+              {settings.calc_kicker || t.calcKicker}
+            </div>
+            <h2 className="text-3xl sm:text-5xl font-extrabold mb-4 text-foreground">
+              {settings.calc_title || t.calcTitle}
+            </h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto text-sm sm:text-base">
+              {settings.calc_subtitle || t.calcSubtitle}
+            </p>
+          </div>
+
+          <OrderCalculator fingerlings={fingerlings} />
+        </div>
+      </section>
+
+      {/* LOCATION CTA */}
+      <section className="py-20">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <div className="glass-card rounded-3xl p-8 sm:p-12 border border-border/60 shadow-2xl space-y-4">
+            <MapPin className="w-12 h-12 text-primary mx-auto" />
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-foreground">
+              {settings.visit_title || t.locationTitle}
+            </h2>
+            <p className="text-muted-foreground text-sm sm:text-base">{settings.address}</p>
+            <p className="text-sm text-muted-foreground flex items-center justify-center gap-2">
+              <Phone className="w-4 h-4 text-primary" /> {settings.phone}
+            </p>
+            <div className="pt-4">
+              <Link
+                to="/location"
+                className="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-all shadow-lg hover:shadow-primary/25 hover:scale-105"
+              >
+                <span>Get Directions & Routing</span>
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+};
